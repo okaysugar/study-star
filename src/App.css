@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* 安全区域适配 */
+@utility pt-safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+@utility pb-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 全局样式 */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif;
+  background-color: #f9fafb;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* 禁止长按弹出菜单（移动端） */
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+textarea, input {
+  -webkit-user-select: text;
+  user-select: text;
+}
