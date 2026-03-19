@@ -1,6 +1,9 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 
+const repoName = 'study-star';
+const assetPrefix = process.env.NODE_ENV === 'production' ? `/${repoName}/` : '/';
+
 export default defineConfig({
   plugins: [pluginReact()],
   html: {
@@ -12,6 +15,6 @@ export default defineConfig({
     },
   },
   output: {
-    assetPrefix: '/study-star/',
+    assetPrefix,
   },
 });
