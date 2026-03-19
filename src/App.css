@@ -1,5 +1,37 @@
 @import "tailwindcss";
 
+@theme {
+  --font-family-sans: 'Nunito', 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+  
+  /* 卡通风格的粗阴影 */
+  --shadow-cartoon: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  --shadow-cartoon-sm: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+  --shadow-cartoon-hover: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+  --shadow-cartoon-active: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+}
+
+@layer base {
+  body {
+    @apply bg-[#FFFBEB] text-gray-900 font-sans;
+    background-image: radial-gradient(#FDE68A 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+}
+
+@layer utilities {
+  .border-cartoon {
+    @apply border-2 border-black;
+  }
+  
+  .btn-cartoon {
+    @apply border-2 border-black shadow-cartoon transition-all duration-150 active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px];
+  }
+
+  .card-cartoon {
+    @apply border-2 border-black shadow-cartoon bg-white rounded-2xl;
+  }
+}
+
 /* 安全区域适配 */
 @utility pt-safe-top {
   padding-top: env(safe-area-inset-top);
@@ -17,12 +49,6 @@ html, body, #root {
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'Noto Sans', sans-serif;
-  background-color: #f9fafb;
 }
 
 /* 滚动条美化 */

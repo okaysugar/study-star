@@ -48,34 +48,35 @@ export function RecordModal({ open, date, existing, onSave, onDelete, onClose }:
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm"
         >
           <motion.div
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="w-full max-w-lg bg-white rounded-t-[2rem] px-6 pt-4 pb-8 shadow-2xl"
+            className="w-full max-w-lg bg-[#FFFBEB] rounded-t-[2rem] px-6 pt-4 pb-8 border-t-4 border-black shadow-[0_-8px_0px_0px_rgba(0,0,0,0.2)]"
           >
             {/* 拖拽指示条 */}
             <div className="flex justify-center mb-6">
-              <div className="w-12 h-1.5 bg-gray-200 rounded-full" />
+              <div className="w-16 h-2 bg-black/20 rounded-full" />
             </div>
 
             {/* 标题 */}
-            <h3 className="text-xl font-bold text-gray-800 text-center mb-8">
+            <h3 className="text-2xl font-black text-black text-center mb-8" style={{ textShadow: '2px 2px 0px #FDE68A' }}>
               {displayDate} 学习态度
             </h3>
 
             {/* 星星评分 */}
-            <div className="flex flex-col items-center mb-8">
-              <p className="text-sm text-gray-500 mb-4 font-medium">点击评分</p>
+            <div className="flex flex-col items-center mb-8 bg-white p-6 rounded-3xl border-2 border-black shadow-cartoon-sm">
+              <p className="text-base text-black mb-4 font-bold">点击星星打分!</p>
               <StarRating value={stars} onChange={setStars} size="lg" />
               <motion.p 
                 key={stars}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="mt-3 text-2xl font-bold text-amber-500"
+                className="mt-4 text-3xl font-black text-black"
+                style={{ textShadow: '2px 2px 0px #FDE68A' }}
               >
                 {stars} 颗星
               </motion.p>
@@ -83,44 +84,44 @@ export function RecordModal({ open, date, existing, onSave, onDelete, onClose }:
 
             {/* 备注输入 */}
             <div className="mb-8">
-              <label className="block text-sm font-semibold text-gray-700 mb-3">备注（可选）</label>
+              <label className="block text-base font-black text-black mb-3">写点什么吧~ (可选)</label>
               <textarea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="今天学习表现如何？"
                 maxLength={200}
                 rows={3}
-                className="w-full px-4 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-gray-800 placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white transition-all duration-200"
+                className="w-full px-5 py-4 bg-white border-2 border-black rounded-2xl text-black placeholder-gray-400 font-bold resize-none focus:outline-none focus:shadow-cartoon transition-all duration-200"
               />
             </div>
 
             {/* 按钮 */}
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               {existing && onDelete && (
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.95, y: 4, x: 4 }}
                   onClick={() => {
                     onDelete();
                     onClose();
                   }}
-                  className="flex-1 py-3.5 rounded-2xl text-red-500 bg-red-50 font-semibold hover:bg-red-100 transition-colors"
+                  className="flex-1 py-4 rounded-2xl text-black bg-[#FECACA] border-2 border-black font-black shadow-cartoon active:shadow-cartoon-active transition-all"
                 >
                   删除
                 </motion.button>
               )}
               <motion.button
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.95, y: 4, x: 4 }}
                 onClick={onClose}
-                className="flex-1 py-3.5 rounded-2xl text-gray-600 bg-gray-100 font-semibold hover:bg-gray-200 transition-colors"
+                className="flex-1 py-4 rounded-2xl text-black bg-white border-2 border-black font-black shadow-cartoon active:shadow-cartoon-active transition-all"
               >
                 取消
               </motion.button>
               <motion.button
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.95, y: 4, x: 4 }}
                 onClick={handleSave}
-                className="flex-[2] py-3.5 rounded-2xl text-white bg-gradient-to-r from-blue-500 to-indigo-500 font-bold hover:from-blue-600 hover:to-indigo-600 transition-all shadow-lg shadow-blue-500/30"
+                className="flex-[2] py-4 rounded-2xl text-black bg-[#A7F3D0] border-2 border-black font-black text-lg shadow-cartoon active:shadow-cartoon-active transition-all"
               >
-                保存
+                保存记录!
               </motion.button>
             </div>
           </motion.div>

@@ -12,16 +12,16 @@ export function StatsBar({ totalStars, recordCount, totalDays, label }: StatsBar
   const progress = recordCount > 0 ? (recordCount / totalDays) * 100 : 0;
 
   return (
-    <div className="bg-white px-5 py-4 rounded-t-3xl shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)] border-t border-gray-100/50 relative z-10">
+    <div className="bg-white px-5 py-5 rounded-t-[2rem] border-t-4 border-black shadow-[0_-8px_0px_0px_rgba(0,0,0,0.1)] relative z-10">
       {/* 进度条 */}
-      <div className="mb-4">
-        <div className="flex justify-between text-xs font-medium text-gray-500 mb-1.5 px-1">
+      <div className="mb-5">
+        <div className="flex justify-between text-sm font-black text-black mb-2 px-1">
           <span>{label}打卡进度</span>
-          <span className="text-blue-600">{Math.round(progress)}%</span>
+          <span className="text-black">{Math.round(progress)}%</span>
         </div>
-        <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden">
+        <div className="h-4 w-full bg-white border-2 border-black rounded-full overflow-hidden shadow-inner">
           <motion.div 
-            className="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full"
+            className="h-full bg-[#A7F3D0] border-r-2 border-black"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ type: 'spring', stiffness: 50, damping: 15, delay: 0.2 }}
@@ -36,39 +36,42 @@ export function StatsBar({ totalStars, recordCount, totalDays, label }: StatsBar
             key={totalStars}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="text-2xl font-black bg-gradient-to-br from-amber-400 to-orange-500 bg-clip-text text-transparent"
+            className="text-3xl font-black text-black"
+            style={{ textShadow: '2px 2px 0px #FDE68A' }}
           >
             {totalStars}
           </motion.span>
-          <span className="text-xs font-medium text-gray-400 mt-0.5">总星数</span>
+          <span className="text-sm font-bold text-gray-600 mt-1">总星数</span>
         </div>
         
-        <div className="w-px h-8 bg-gray-100" />
+        <div className="w-1 h-10 bg-black/10 rounded-full" />
         
         <div className="flex flex-col items-center">
           <motion.span 
             key={avgStars}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="text-2xl font-black text-blue-500"
+            className="text-3xl font-black text-black"
+            style={{ textShadow: '2px 2px 0px #BAE6FD' }}
           >
             {avgStars}
           </motion.span>
-          <span className="text-xs font-medium text-gray-400 mt-0.5">平均评分</span>
+          <span className="text-sm font-bold text-gray-600 mt-1">平均评分</span>
         </div>
         
-        <div className="w-px h-8 bg-gray-100" />
+        <div className="w-1 h-10 bg-black/10 rounded-full" />
         
         <div className="flex flex-col items-center">
           <motion.span 
             key={recordCount}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="text-2xl font-black text-emerald-500"
+            className="text-3xl font-black text-black"
+            style={{ textShadow: '2px 2px 0px #A7F3D0' }}
           >
-            {recordCount}<span className="text-sm font-semibold text-gray-300">/{totalDays}</span>
+            {recordCount}<span className="text-lg font-bold text-gray-400">/{totalDays}</span>
           </motion.span>
-          <span className="text-xs font-medium text-gray-400 mt-0.5">打卡天数</span>
+          <span className="text-sm font-bold text-gray-600 mt-1">打卡天数</span>
         </div>
       </div>
     </div>

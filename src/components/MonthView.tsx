@@ -74,22 +74,22 @@ export function MonthView({
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => onNavigate(-1)}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-600 hover:bg-gray-50 transition-colors"
+          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px] transition-all"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+          <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
           </svg>
         </motion.button>
-        <span className="text-base font-bold text-gray-800 tracking-wide">
+        <span className="text-lg font-black text-black tracking-wide bg-white px-4 py-2 rounded-xl border-2 border-black shadow-cartoon-sm">
           {year}年{getMonthName(month)}
         </span>
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => onNavigate(1)}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-600 hover:bg-gray-50 transition-colors"
+          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px] transition-all"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+          <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
           </svg>
         </motion.button>
       </div>
@@ -97,7 +97,7 @@ export function MonthView({
       {/* 星期头 */}
       <div className="grid grid-cols-7 px-4 mb-2">
         {WEEKDAY_HEADERS.map((name) => (
-          <div key={name} className="text-center text-xs font-bold text-gray-400 py-1">
+          <div key={name} className="text-center text-sm font-black text-black py-1">
             {name}
           </div>
         ))}
@@ -123,23 +123,24 @@ export function MonthView({
               key={dateStr}
               onClick={() => isCurrentMonth && !future && onDateSelect(dateStr)}
               disabled={!isCurrentMonth || future}
-              whileTap={isCurrentMonth && !future ? { scale: 0.9 } : undefined}
-              className={`flex flex-col items-center justify-center py-2 rounded-2xl transition-all duration-200 min-h-[3.5rem] relative ${
+              whileTap={isCurrentMonth && !future ? { scale: 0.9, y: 2, x: 2 } : undefined}
+              className={`flex flex-col items-center justify-center py-2 rounded-2xl transition-all duration-150 min-h-[4rem] relative border-2 ${
                 !isCurrentMonth
-                  ? 'opacity-0 pointer-events-none'
+                  ? 'opacity-0 pointer-events-none border-transparent'
                   : today
-                    ? 'bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/30'
+                    ? 'bg-[#BAE6FD] border-black shadow-cartoon'
                     : record
-                      ? 'bg-amber-50/80 border border-amber-200/50 shadow-sm'
+                      ? 'bg-[#FDE68A] border-black shadow-cartoon'
                       : future
-                        ? 'opacity-40 bg-gray-50/50'
-                        : 'bg-white border border-gray-100 hover:border-gray-200 shadow-sm'
-              }`}
+                        ? 'bg-gray-100 border-dashed border-gray-300 opacity-60'
+                        : 'bg-white border-black shadow-cartoon hover:bg-[#FEF3C7]'
+              } ${isCurrentMonth && !future && 'active:shadow-cartoon-active'}`}
             >
               <span
-                className={`text-sm font-bold leading-tight ${
-                  today ? 'text-white' : isCurrentMonth ? 'text-gray-700' : 'text-gray-400'
+                className={`text-base font-black leading-tight ${
+                  today ? 'text-black' : isCurrentMonth ? 'text-black' : 'text-gray-400'
                 }`}
+                style={today ? { textShadow: '1px 1px 0px white' } : {}}
               >
                 {day.getDate()}
               </span>
@@ -149,8 +150,8 @@ export function MonthView({
                   {[1, 2, 3, 4, 5].map((i) => (
                     <div
                       key={i}
-                      className={`w-1.5 h-1.5 rounded-full shadow-sm ${
-                        i <= record.stars ? 'bg-white' : 'bg-white/30'
+                      className={`w-1.5 h-1.5 rounded-full border border-black ${
+                        i <= record.stars ? 'bg-white' : 'bg-black/20'
                       }`}
                     />
                   ))}
@@ -158,7 +159,7 @@ export function MonthView({
               )}
               {/* Today indicator dot if no record yet */}
               {today && !record && (
-                <div className="absolute bottom-1.5 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                <div className="absolute bottom-1.5 w-2 h-2 bg-black rounded-full animate-bounce" />
               )}
             </motion.button>
           );

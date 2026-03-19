@@ -38,19 +38,20 @@ export default function App() {
   const existingRecord = modalDate ? getRecord(modalDate) : undefined;
 
   return (
-    <div className="flex flex-col h-screen max-w-lg mx-auto bg-gray-50/50 relative overflow-hidden">
-      {/* Header - Glassmorphism */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100/80 px-4 pt-safe-top shadow-sm">
-        <div className="flex items-center justify-between py-3">
+    <div className="flex flex-col h-screen max-w-lg mx-auto bg-[#FFFBEB] relative overflow-hidden font-sans">
+      {/* Header - Cartoon Style */}
+      <header className="sticky top-0 z-40 bg-[#FFFBEB] border-b-4 border-black px-4 pt-safe-top shadow-cartoon-sm mb-2">
+        <div className="flex items-center justify-between py-4">
           <motion.h1 
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-1.5"
+            className="text-2xl font-black text-black flex items-center gap-2"
+            style={{ textShadow: '2px 2px 0px #FDE68A' }}
           >
             <motion.span 
               animate={{ rotate: [0, 15, -15, 0] }}
               transition={{ repeat: Infinity, duration: 2, repeatDelay: 3 }}
-              className="text-2xl"
+              className="text-3xl drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]"
             >
               ⭐
             </motion.span>
@@ -59,28 +60,28 @@ export default function App() {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleToday}
-            className="text-sm text-blue-600 font-semibold px-3.5 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 active:bg-blue-200 transition-colors"
+            className="text-sm font-bold px-4 py-2 bg-[#A7F3D0] text-black border-2 border-black rounded-xl shadow-cartoon transition-all active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px]"
           >
-            今天
+            今天!
           </motion.button>
         </div>
 
         {/* 视图切换 Tab */}
-        <div className="flex bg-gray-100/80 rounded-xl p-1 mb-3 relative">
+        <div className="flex bg-white border-2 border-black rounded-2xl p-1.5 mb-4 shadow-cartoon-sm relative">
           {['week', 'month'].map((mode) => {
             const isSelected = viewMode === mode;
             return (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode as ViewMode)}
-                className={`flex-1 py-2 text-sm font-medium rounded-lg relative z-10 transition-colors duration-200 ${
-                  isSelected ? 'text-blue-600' : 'text-gray-500 hover:text-gray-700'
+                className={`flex-1 py-2.5 text-base font-bold rounded-xl relative z-10 transition-colors duration-200 ${
+                  isSelected ? 'text-black' : 'text-gray-500 hover:text-black'
                 }`}
               >
                 {isSelected && (
                   <motion.div
                     layoutId="tab-indicator"
-                    className="absolute inset-0 bg-white rounded-lg shadow-sm"
+                    className="absolute inset-0 bg-[#FDE68A] border-2 border-black rounded-xl"
                     initial={false}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
