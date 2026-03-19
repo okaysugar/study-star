@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import type { DailyRecord } from '../types';
 import {
   formatDate,
@@ -19,6 +20,21 @@ interface MonthViewProps {
 
 const WEEKDAY_HEADERS = ['一', '二', '三', '四', '五', '六', '日'];
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.02
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, scale: 0.8 },
+  show: { opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+};
+
 export function MonthView({
   currentDate,
   records,
@@ -38,11 +54,11 @@ export function MonthView({
   /** 渲染星星小点 */
   const renderMiniStars = (count: number) => {
     return (
-      <div className="flex gap-px justify-center mt-0.5">
+      <div className="flex gap-0.5 justify-center mt-1">
         {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
-            className={`w-1.5 h-1.5 rounded-full ${
+            className={`w-1.5 h-1.5 rounded-full shadow-sm ${
               i <= count ? 'bg-amber-400' : 'bg-gray-200'
             }`}
           />
@@ -52,41 +68,48 @@ export function MonthView({
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0">
+    <div className="flex flex-col flex-1 min-h-0 h-full">
       {/* 月导航 */}
-      <div className="flex items-center justify-between px-4 py-3">
-        <button
+      <div className="flex items-center justify-between px-5 py-4">
+        <motion.button
+          whileTap={{ scale: 0.9 }}
           onClick={() => onNavigate(-1)}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200 transition"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-600 hover:bg-gray-50 transition-colors"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
           </svg>
-        </button>
-        <span className="text-base font-semibold text-gray-700">
+        </motion.button>
+        <span className="text-base font-bold text-gray-800 tracking-wide">
           {year}年{getMonthName(month)}
         </span>
-        <button
+        <motion.button
+          whileTap={{ scale: 0.9 }}
           onClick={() => onNavigate(1)}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200 transition"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-600 hover:bg-gray-50 transition-colors"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
           </svg>
-        </button>
+        </motion.button>
       </div>
 
       {/* 星期头 */}
-      <div className="grid grid-cols-7 px-3 mb-1">
+      <div className="grid grid-cols-7 px-4 mb-2">
         {WEEKDAY_HEADERS.map((name) => (
-          <div key={name} className="text-center text-xs font-medium text-gray-400 py-1">
+          <div key={name} className="text-center text-xs font-bold text-gray-400 py-1">
             {name}
           </div>
         ))}
       </div>
 
       {/* 日期网格 */}
-      <div className="grid grid-cols-7 gap-1 px-3 flex-1 overflow-y-auto pb-2">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-7 gap-2 px-4 flex-1 overflow-y-auto pb-6 content-start"
+      >
         {grid.map((day) => {
           const dateStr = formatDate(day);
           const record = records[dateStr];
@@ -95,24 +118,26 @@ export function MonthView({
           const future = day > new Date();
 
           return (
-            <button
+            <motion.button
+              variants={item}
               key={dateStr}
               onClick={() => isCurrentMonth && !future && onDateSelect(dateStr)}
               disabled={!isCurrentMonth || future}
-              className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all duration-150 min-h-[3.2rem] ${
+              whileTap={isCurrentMonth && !future ? { scale: 0.9 } : undefined}
+              className={`flex flex-col items-center justify-center py-2 rounded-2xl transition-all duration-200 min-h-[3.5rem] relative ${
                 !isCurrentMonth
-                  ? 'opacity-30'
+                  ? 'opacity-0 pointer-events-none'
                   : today
-                    ? 'bg-blue-500 text-white shadow-md shadow-blue-500/30'
+                    ? 'bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/30'
                     : record
-                      ? 'bg-amber-50 border border-amber-200'
+                      ? 'bg-amber-50/80 border border-amber-200/50 shadow-sm'
                       : future
-                        ? 'opacity-40'
-                        : 'active:bg-gray-100'
+                        ? 'opacity-40 bg-gray-50/50'
+                        : 'bg-white border border-gray-100 hover:border-gray-200 shadow-sm'
               }`}
             >
               <span
-                className={`text-sm font-semibold leading-tight ${
+                className={`text-sm font-bold leading-tight ${
                   today ? 'text-white' : isCurrentMonth ? 'text-gray-700' : 'text-gray-400'
                 }`}
               >
@@ -120,21 +145,25 @@ export function MonthView({
               </span>
               {record && !today && renderMiniStars(record.stars)}
               {record && today && (
-                <div className="flex gap-px justify-center mt-0.5">
+                <div className="flex gap-0.5 justify-center mt-1">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <div
                       key={i}
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        i <= record.stars ? 'bg-white' : 'bg-blue-300'
+                      className={`w-1.5 h-1.5 rounded-full shadow-sm ${
+                        i <= record.stars ? 'bg-white' : 'bg-white/30'
                       }`}
                     />
                   ))}
                 </div>
               )}
-            </button>
+              {/* Today indicator dot if no record yet */}
+              {today && !record && (
+                <div className="absolute bottom-1.5 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+              )}
+            </motion.button>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* 统计 */}
       <StatsBar totalStars={totalStars} recordCount={recordCount} totalDays={totalDays} label="本月" />
