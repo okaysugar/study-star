@@ -3,6 +3,9 @@ import { pluginReact } from "@rsbuild/plugin-react";
 
 export default defineConfig({
 	plugins: [pluginReact()],
+	output: {
+		assetPrefix: "/",
+	},
 	html: {
 		title: "Study Star ⭐",
 		meta: {
