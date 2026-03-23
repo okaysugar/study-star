@@ -14,6 +14,14 @@ interface MonthViewProps {
   onNavigate: (direction: -1 | 1) => void;
 }
 
+const STAR_FEEDBACK: Record<number, string> = {
+  1: '再接再厉',
+  2: '继续努力',
+  3: '还不错哦',
+  4: '表现很好',
+  5: '非常棒',
+};
+
 const WEEKDAY_HEADERS = ['一', '二', '三', '四', '五', '六', '日'];
 
 const container: Variants = {
@@ -41,18 +49,25 @@ export function MonthView({
   const month = currentDate.getMonth();
   const grid = getMonthGrid(year, month);
 
-  /** 渲染星星小点 */
-  const renderMiniStars = (count: number) => {
+  /** 渲染星级和数量 */
+  const renderStarCount = (count: number, isToday: boolean) => {
     return (
-      <div className="flex gap-0.5 justify-center mt-1">
-        {[1, 2, 3, 4, 5].map((i) => (
-          <div
-            key={i}
-            className={`w-1.5 h-1.5 rounded-full shadow-sm ${
-              i <= count ? 'bg-amber-400' : 'bg-gray-200'
-            }`}
+      <div className="flex items-center justify-center gap-0.5 mt-0.5">
+        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]">
+          <path
+            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            fill="#FDE047"
+            stroke="#000000"
+            strokeWidth="2"
+            strokeLinejoin="round"
           />
-        ))}
+        </svg>
+        <span 
+          className="text-[11px] font-black text-black leading-none" 
+          style={isToday ? { textShadow: '1px 1px 0px white' } : {}}
+        >
+          {count}
+        </span>
       </div>
     );
   };
@@ -134,17 +149,12 @@ export function MonthView({
               >
                 {day.getDate()}
               </span>
-              {record && !today && renderMiniStars(record.stars)}
-              {record && today && (
-                <div className="flex gap-0.5 justify-center mt-1">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <div
-                      key={i}
-                      className={`w-1.5 h-1.5 rounded-full border border-black ${
-                        i <= record.stars ? 'bg-white' : 'bg-black/20'
-                      }`}
-                    />
-                  ))}
+              {record && renderStarCount(record.stars, today)}
+              {record && (
+                <div className="mt-1 px-1 py-0.5 bg-white border border-black rounded shadow-[1px_1px_0px_rgba(0,0,0,1)] flex items-center justify-center">
+                  <span className="text-[9px] font-black text-amber-600 whitespace-nowrap scale-90 origin-center leading-none">
+                    {STAR_FEEDBACK[record.stars]}
+                  </span>
                 </div>
               )}
               {/* Today indicator dot if no record yet */}

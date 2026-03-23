@@ -43,7 +43,7 @@ export default function App() {
     <div className="flex flex-col h-screen max-w-lg mx-auto bg-[#FFFBEB] relative overflow-hidden font-sans">
       {/* Header - Cartoon Style */}
       <header className="sticky top-0 z-40 bg-[#FFFBEB] border-b-4 border-black px-4 pt-safe-top shadow-cartoon-sm mb-2">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-2">
           <motion.h1 
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ export default function App() {
             >
               ⭐
             </motion.span>
-            Study Star
+            小汐的学习星
           </motion.h1>
           <div className="flex items-center gap-3">
             <motion.button
@@ -78,14 +78,14 @@ export default function App() {
         </div>
 
         {/* 视图切换 Tab */}
-        <div className="flex bg-white border-2 border-black rounded-2xl p-1.5 mb-4 shadow-cartoon-sm relative">
+        <div className="flex bg-white border-2 border-black rounded-2xl p-1.5 mb-2 shadow-cartoon-sm relative">
           {['week', 'month'].map((mode) => {
             const isSelected = viewMode === mode;
             return (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode as ViewMode)}
-                className={`flex-1 py-2.5 text-base font-bold rounded-xl relative z-10 transition-colors duration-200 ${
+                className={`flex-1 py-1.5 text-sm font-bold rounded-xl relative z-10 transition-colors duration-200 ${
                   isSelected ? 'text-black' : 'text-gray-500 hover:text-black'
                 }`}
               >

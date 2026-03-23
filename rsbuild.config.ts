@@ -7,7 +7,7 @@ export default defineConfig({
 		assetPrefix: "/",
 	},
 	html: {
-		title: "Study Star ⭐",
+		title: "小汐的学习星",
 		meta: {
 			viewport:
 				"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
