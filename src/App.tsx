@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart2 } from 'lucide-react';
+import { BarChart2, FolderOpen, Download, Upload } from 'lucide-react';
 import type { ViewMode } from './types';
 import { useRecords } from './hooks/useRecords';
 import { WeekView } from './components/WeekView';
@@ -13,7 +13,34 @@ export default function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [modalDate, setModalDate] = useState<string | null>(null);
   const [showStats, setShowStats] = useState(false);
-  const { records, addRecord, deleteRecord, getRecord } = useRecords();
+  const [showIOMenu, setShowIOMenu] = useState(false);
+  const { records, addRecord, deleteRecord, getRecord, exportRecords, importRecords } = useRecords();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImport = useCallback(() => {
+    setShowIOMenu(false);
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleExport = useCallback(() => {
+    setShowIOMenu(false);
+    exportRecords();
+  }, [exportRecords]);
+
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const ok = importRecords(reader.result as string);
+        if (!ok) alert('导入失败：文件格式不正确');
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    },
+    [importRecords],
+  );
 
   const handleNavigate = useCallback(
     (direction: -1 | 1) => {
@@ -61,6 +88,53 @@ export default function App() {
             小汐的学习星
           </motion.h1>
           <div className="flex items-center gap-3">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+            {/* 导入/导出合并入口 */}
+            <div className="relative">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowIOMenu((v) => !v)}
+                className="w-10 h-10 flex items-center justify-center bg-[#FEF3C7] border-2 border-black rounded-xl shadow-cartoon transition-all active:shadow-cartoon-active active:translate-y-1 active:translate-x-1"
+                title="导入/导出"
+              >
+                <FolderOpen className="w-5 h-5 text-amber-700" strokeWidth={2.5} />
+              </motion.button>
+              <AnimatePresence>
+                {showIOMenu && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setShowIOMenu(false)} />
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9, y: -4 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: -4 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      className="absolute right-0 top-12 z-50 bg-white border-2 border-black rounded-2xl shadow-cartoon overflow-hidden min-w-[120px]"
+                    >
+                      <button
+                        onClick={handleImport}
+                        className="flex items-center gap-2 w-full px-4 py-2.5 text-sm font-bold text-black hover:bg-[#FEF3C7] transition-colors border-b-2 border-black"
+                      >
+                        <Upload className="w-4 h-4 text-amber-700" strokeWidth={2.5} />
+                        导入记录
+                      </button>
+                      <button
+                        onClick={handleExport}
+                        className="flex items-center gap-2 w-full px-4 py-2.5 text-sm font-bold text-black hover:bg-[#DBEAFE] transition-colors"
+                      >
+                        <Download className="w-4 h-4 text-blue-600" strokeWidth={2.5} />
+                        导出记录
+                      </button>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setShowStats(true)}

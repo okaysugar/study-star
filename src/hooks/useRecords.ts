@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import type { DailyRecord } from '../types';
-import { loadRecords, saveRecords } from '../utils/storage';
+import { loadRecords, saveRecords, exportRecordsToFile, parseImportedRecords } from '../utils/storage';
 
 export function useRecords() {
   const [records, setRecords] = useState<Record<string, DailyRecord>>(() => loadRecords());
@@ -27,8 +27,23 @@ export function useRecords() {
     [records],
   );
 
+  const exportRecords = useCallback(() => {
+    exportRecordsToFile(records);
+  }, [records]);
+
+  const importRecords = useCallback((text: string): boolean => {
+    const imported = parseImportedRecords(text);
+    if (!imported) return false;
+    setRecords((prev) => {
+      const next = { ...prev, ...imported };
+      saveRecords(next);
+      return next;
+    });
+    return true;
+  }, []);
+
   return useMemo(
-    () => ({ records, addRecord, deleteRecord, getRecord }),
-    [records, addRecord, deleteRecord, getRecord],
+    () => ({ records, addRecord, deleteRecord, getRecord, exportRecords, importRecords }),
+    [records, addRecord, deleteRecord, getRecord, exportRecords, importRecords],
   );
 }
