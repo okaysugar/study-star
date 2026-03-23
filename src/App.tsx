@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BarChart2 } from 'lucide-react';
 import type { ViewMode } from './types';
 import { useRecords } from './hooks/useRecords';
 import { WeekView } from './components/WeekView';
@@ -63,9 +64,9 @@ export default function App() {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setShowStats(true)}
-              className="w-10 h-10 flex items-center justify-center bg-white border-2 border-black rounded-xl shadow-cartoon transition-all active:shadow-cartoon-active active:translate-y-1 active:translate-x-1"
+              className="w-10 h-10 flex items-center justify-center bg-[#E0E7FF] border-2 border-black rounded-xl shadow-cartoon transition-all active:shadow-cartoon-active active:translate-y-1 active:translate-x-1"
             >
-              <span className="text-xl">📊</span>
+              <BarChart2 className="w-5 h-5 text-indigo-600" strokeWidth={2.5} />
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.95 }}
