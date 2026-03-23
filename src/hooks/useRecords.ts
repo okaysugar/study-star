@@ -27,25 +27,8 @@ export function useRecords() {
     [records],
   );
 
-  const getTotalStars = useCallback(
-    (dates: string[]): number => {
-      return dates.reduce((sum, date) => {
-        const r = records[date];
-        return sum + (r ? r.stars : 0);
-      }, 0);
-    },
-    [records],
-  );
-
-  const getRecordCount = useCallback(
-    (dates: string[]): number => {
-      return dates.filter((date) => records[date]).length;
-    },
-    [records],
-  );
-
   return useMemo(
-    () => ({ records, addRecord, deleteRecord, getRecord, getTotalStars, getRecordCount }),
-    [records, addRecord, deleteRecord, getRecord, getTotalStars, getRecordCount],
+    () => ({ records, addRecord, deleteRecord, getRecord }),
+    [records, addRecord, deleteRecord, getRecord],
   );
 }

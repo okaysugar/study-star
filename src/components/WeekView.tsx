@@ -1,19 +1,16 @@
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import type { DailyRecord } from '../types';
-import { formatDate, getWeekRange, getWeekdayName, isToday, formatWeekRange, getWeekDates } from '../utils/date';
+import { formatDate, getWeekRange, getWeekdayName, isToday, formatWeekRange } from '../utils/date';
 import { StarRating } from './StarRating';
-import { StatsBar } from './StatsBar';
 
 interface WeekViewProps {
   currentDate: Date;
   records: Record<string, DailyRecord>;
   onDateSelect: (date: string) => void;
   onNavigate: (direction: -1 | 1) => void;
-  getTotalStars: (dates: string[]) => number;
-  getRecordCount: (dates: string[]) => number;
 }
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -23,7 +20,7 @@ const container = {
   }
 };
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
 };
@@ -33,13 +30,8 @@ export function WeekView({
   records,
   onDateSelect,
   onNavigate,
-  getTotalStars,
-  getRecordCount,
 }: WeekViewProps) {
   const { days } = getWeekRange(currentDate);
-  const weekDates = getWeekDates(currentDate);
-  const totalStars = getTotalStars(weekDates);
-  const recordCount = getRecordCount(weekDates);
 
   return (
     <div className="flex flex-col flex-1 min-h-0 h-full">
@@ -48,7 +40,7 @@ export function WeekView({
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => onNavigate(-1)}
-          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px] transition-all"
+          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-1 active:translate-x-1 transition-all"
         >
           <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
@@ -60,7 +52,7 @@ export function WeekView({
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => onNavigate(1)}
-          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px] transition-all"
+          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-1 active:translate-x-1 transition-all"
         >
           <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
@@ -99,7 +91,7 @@ export function WeekView({
               } ${!future && 'active:shadow-cartoon-active'}`}
             >
               {/* 日期 */}
-              <div className="flex flex-col items-center min-w-[3.5rem]">
+              <div className="flex flex-col items-center min-w-14">
                 <span className={`text-sm font-black mb-1 ${today ? 'text-black' : 'text-gray-600'}`}>
                   周{getWeekdayName(day)}
                 </span>
@@ -159,9 +151,6 @@ export function WeekView({
           );
         })}
       </motion.div>
-
-      {/* 统计 */}
-      <StatsBar totalStars={totalStars} recordCount={recordCount} totalDays={7} label="本周" />
     </div>
   );
 }

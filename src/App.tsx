@@ -5,12 +5,14 @@ import { useRecords } from './hooks/useRecords';
 import { WeekView } from './components/WeekView';
 import { MonthView } from './components/MonthView';
 import { RecordModal } from './components/RecordModal';
+import { StatsView } from './components/StatsView';
 
 export default function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('week');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [modalDate, setModalDate] = useState<string | null>(null);
-  const { records, addRecord, deleteRecord, getRecord, getTotalStars, getRecordCount } = useRecords();
+  const [showStats, setShowStats] = useState(false);
+  const { records, addRecord, deleteRecord, getRecord } = useRecords();
 
   const handleNavigate = useCallback(
     (direction: -1 | 1) => {
@@ -57,13 +59,22 @@ export default function App() {
             </motion.span>
             Study Star
           </motion.h1>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={handleToday}
-            className="text-sm font-bold px-4 py-2 bg-[#A7F3D0] text-black border-2 border-black rounded-xl shadow-cartoon transition-all active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px]"
-          >
-            今天!
-          </motion.button>
+          <div className="flex items-center gap-3">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowStats(true)}
+              className="w-10 h-10 flex items-center justify-center bg-white border-2 border-black rounded-xl shadow-cartoon transition-all active:shadow-cartoon-active active:translate-y-1 active:translate-x-1"
+            >
+              <span className="text-xl">📊</span>
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={handleToday}
+              className="text-sm font-bold px-4 py-2 bg-[#A7F3D0] text-black border-2 border-black rounded-xl shadow-cartoon transition-all active:shadow-cartoon-active active:translate-y-1 active:translate-x-1"
+            >
+              今天!
+            </motion.button>
+          </div>
         </div>
 
         {/* 视图切换 Tab */}
@@ -110,8 +121,6 @@ export default function App() {
                 records={records}
                 onDateSelect={handleDateSelect}
                 onNavigate={handleNavigate}
-                getTotalStars={getTotalStars}
-                getRecordCount={getRecordCount}
               />
             ) : (
               <MonthView
@@ -119,13 +128,18 @@ export default function App() {
                 records={records}
                 onDateSelect={handleDateSelect}
                 onNavigate={handleNavigate}
-                getTotalStars={getTotalStars}
-                getRecordCount={getRecordCount}
               />
             )}
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* 统计弹窗 */}
+      <AnimatePresence>
+        {showStats && (
+          <StatsView records={records} onClose={() => setShowStats(false)} />
+        )}
+      </AnimatePresence>
 
       {/* 编辑弹窗 */}
       <RecordModal

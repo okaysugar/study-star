@@ -1,26 +1,22 @@
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import type { DailyRecord } from '../types';
 import {
   formatDate,
   getMonthGrid,
   getMonthName,
-  getMonthDates,
   isToday,
 } from '../utils/date';
-import { StatsBar } from './StatsBar';
 
 interface MonthViewProps {
   currentDate: Date;
   records: Record<string, DailyRecord>;
   onDateSelect: (date: string) => void;
   onNavigate: (direction: -1 | 1) => void;
-  getTotalStars: (dates: string[]) => number;
-  getRecordCount: (dates: string[]) => number;
 }
 
 const WEEKDAY_HEADERS = ['一', '二', '三', '四', '五', '六', '日'];
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -30,7 +26,7 @@ const container = {
   }
 };
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, scale: 0.8 },
   show: { opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 300, damping: 24 } }
 };
@@ -40,16 +36,10 @@ export function MonthView({
   records,
   onDateSelect,
   onNavigate,
-  getTotalStars,
-  getRecordCount,
 }: MonthViewProps) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const grid = getMonthGrid(year, month);
-  const monthDates = getMonthDates(year, month);
-  const totalStars = getTotalStars(monthDates);
-  const recordCount = getRecordCount(monthDates);
-  const totalDays = new Date(year, month + 1, 0).getDate();
 
   /** 渲染星星小点 */
   const renderMiniStars = (count: number) => {
@@ -74,7 +64,7 @@ export function MonthView({
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => onNavigate(-1)}
-          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px] transition-all"
+          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-1 active:translate-x-1 transition-all"
         >
           <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
@@ -86,7 +76,7 @@ export function MonthView({
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => onNavigate(1)}
-          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-[4px] active:translate-x-[4px] transition-all"
+          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border-2 border-black shadow-cartoon active:shadow-cartoon-active active:translate-y-1 active:translate-x-1 transition-all"
         >
           <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
@@ -124,7 +114,7 @@ export function MonthView({
               onClick={() => isCurrentMonth && !future && onDateSelect(dateStr)}
               disabled={!isCurrentMonth || future}
               whileTap={isCurrentMonth && !future ? { scale: 0.9, y: 2, x: 2 } : undefined}
-              className={`flex flex-col items-center justify-center py-2 rounded-2xl transition-all duration-150 min-h-[4rem] relative border-2 ${
+              className={`flex flex-col items-center justify-center py-2 rounded-2xl transition-all duration-150 min-h-16 relative border-2 ${
                 !isCurrentMonth
                   ? 'opacity-0 pointer-events-none border-transparent'
                   : today
@@ -165,9 +155,6 @@ export function MonthView({
           );
         })}
       </motion.div>
-
-      {/* 统计 */}
-      <StatsBar totalStars={totalStars} recordCount={recordCount} totalDays={totalDays} label="本月" />
     </div>
   );
 }
