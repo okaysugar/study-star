@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "rsbuild dev",
-    "build": "rsbuild build"
+    "build": "rsbuild build",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
@@ -21,6 +23,7 @@
     "@types/react-dom": "^19.2.3",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "wrangler": "^4.76.0"
   }
 }
